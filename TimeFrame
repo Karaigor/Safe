@@ -1,0 +1,38 @@
+package javaapplication5;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class TimeFrame extends JPanel{
+    private JLabel time = new JLabel("0:0", JLabel.CENTER);
+    private Timer timer;
+    private JButton pause = new JButton ("Пауза");
+    private JButton start = new JButton ("Старт");
+    String newtime = "", x = "", y = "";
+
+    public TimeFrame(){
+        timer = new Timer(this);
+        start.addActionListener(new starts());
+        pause.addActionListener(new starts());
+        add(time);
+        add(start);
+        add(pause);
+    }
+    public void update(long settime){
+        x = "" + (settime/60000)%1000;
+        y = "" + (((settime/1000)-Integer.parseInt(x)*60)%1000) + "," + (settime)%1000;
+        time.setText(x + ":" + y);
+    }
+    public class starts implements ActionListener{
+        public void actionPerformed(ActionEvent event){
+            if(event.getSource() == start){
+                timer.startTimer();
+            }else{
+                timer.pauseTimer();
+            }
+        }
+    }
+}
