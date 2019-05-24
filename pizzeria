@@ -1,0 +1,135 @@
+package Pizzeria;
+
+public class Pizzeria{
+    
+    public static void main(String[] args) {
+        Workers workers= new Workers();
+        Thread t = new Thread(new Simulation(workers));
+        System.out.println("Запускаем симуляцию пиццерии");
+        try{
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException e){}
+        t.start();
+        try{
+        t.join();}
+        catch(InterruptedException e){}
+        System.out.println("Cимуляция успешно завершена");
+    }
+}
+
+class Workers{
+    
+    double x = Math.random();
+    String size = "";
+    Cook pizza1 = new Cook("Тесто");
+    Cook pizza2 = new Cook("Сыр");
+    Cook pizza3 = new Cook("Овощи");
+    Cook pizza4 = new Cook("Соус");
+    Chef pizza = new Chef();
+    
+    synchronized void process(){
+        if(x <= 0.5){
+            System.out.println("Заказана маленькая пицца");
+            size = "little";
+        }
+        else{
+            System.out.println("Заказана большая пицца");
+            size = "big";
+        }
+        System.out.println("-------------------------------------");
+        try{
+        Thread.sleep(1000);}
+        catch(InterruptedException e){}
+        pizza1.start();
+        pizza2.start();
+        pizza3.start();
+        pizza4.start();
+        try {
+            pizza1.join();
+            pizza2.join();
+            pizza3.join();
+            pizza4.join();
+        } catch (InterruptedException e) {}
+        if("little".equals(size))
+            System.out.println("Компоненты маленькой пиццы готовы");
+        if("big".equals(size))
+            System.out.println("Компоненты большой пиццы готовы");
+        System.out.println("-------------------------------------");
+        try{
+            Thread.sleep(1000);
+            }
+            catch(InterruptedException e){}
+        pizza.start();
+        try {
+            pizza.join();
+        } catch (InterruptedException e) {}
+        if("little".equals(size))
+            System.out.println("Шеф повар приготовил меленькую пиццу");
+        if("big".equals(size))
+            System.out.println("Шеф повар приготовил большую пиццу");
+        System.out.println("-------------------------------------");
+    }
+}
+
+class Simulation implements Runnable{
+    
+    Workers res;
+    Simulation(Workers res){
+        this.res=res;
+    }
+    
+    @Override
+    public void run() {
+        res.process();
+    }   
+}
+
+class Chef extends Thread {
+    double z = Math.random();
+    long time;
+    
+    @Override
+    public void run() {
+        System.out.println("Шеф повар начал готовить пиццу");
+        time = (long) (10000 *z + 10000);
+        try {
+            sleep(time);} 
+        catch (InterruptedException e) {}
+        if(z <= 0.5){
+            System.out.println("Шеф повар сделал перерыв..");
+        }
+        try {
+            sleep(7000); } 
+        catch (InterruptedException e) {}
+    }
+}
+
+class Cook extends Thread {
+    
+    private String[] components;
+    double y = Math.random();
+    long time;
+
+    Cook(String... components) {
+        this.components = components;
+    }
+
+    @Override
+    public void run() { 
+        for (int i = 0; i < components.length; i++) { 
+            System.out.println("Повар начал готовить: " + components[i]);
+            try {
+                time = (long) (5000 * y + 10000);
+                sleep(time); } 
+            catch (InterruptedException e) {}
+            if (y <= 0.5){
+                System.out.println("Повар который готовит " + components[i] + " сделал перерыв..");
+                try {
+                sleep(5000); } 
+                catch (InterruptedException e) {}
+            }
+                System.out.println("Приготовлен компонент: " + components[i]);
+        }
+    }
+}
