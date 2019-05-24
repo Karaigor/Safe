@@ -1,0 +1,131 @@
+import java.util.Scanner;
+public class Student {
+    static int count = 0;
+        
+    public interface Abiturient {
+        public String Name();
+        public String Surname();
+    }
+    
+    public abstract static class Students implements Abiturient {
+ 
+        @Override
+        abstract public String Name();
+ 
+        @Override
+        abstract public String Surname();
+    }
+    
+    public static class StudentOfFaculty extends Students {
+        private String name, surname, faculty, type;
+        double group;
+ 
+        public StudentOfFaculty(String name, String surname, String faculty, String type, double group) {
+            super();
+            count++;
+            this.name = name;
+            this.surname = surname;
+            this.faculty = faculty;
+            this.type = type;
+            this.group = group;
+        }
+ 
+        @Override
+        public String Name() {
+            return name;
+        }
+ 
+        @Override
+        public String Surname() {
+            return surname;
+        }
+ 
+        public String Faculty() {
+            return faculty;
+        }
+        
+        public String Type() {
+            return type;
+        }
+        
+        public double Group() {
+            return group;
+        }
+ 
+        public void SetName(String name) {
+            this.name = name;
+        }
+ 
+        public void SetSurname(String surname) {
+            this.surname = surname;
+        }
+
+        public void SetFaculty(String faculty) {
+            this.faculty = faculty;
+        }
+        
+        public void SetType(String type) {
+            this.type = type;
+        }
+        
+        public void SetGroup(double group) {
+            this.group = group;
+        }
+        
+        public static String toStringCount(int count){ 
+	String str = "Кількість об'єктів класу: " + (Math.sqrt(count));
+        return str;
+    }
+
+    @Override  
+    public String toString (){
+	String str = "Результат toString()";        
+	return str;
+    }
+    }
+    
+    public static class Main {
+        public static void main(String[] args) {
+            StudentOfFaculty[] students = new StudentOfFaculty[5];
+            for (int i = 0; i < students.length; i++) {
+                students[0] = new StudentOfFaculty("Olga", "Chukova", "MatFak", "Zaochn", 5.1423);
+                students[1] = new StudentOfFaculty("Sveta", "Ivanova", "FizFak", "Ochn", 1.278);
+                students[2] = new StudentOfFaculty("Lara", "Polakova", "MatFak", "Zaochn", 5.1423);
+                students[3] = new StudentOfFaculty("Ivan", "Petrov", "JurFak", "Ochn", 3.1226);
+                students[4] = new StudentOfFaculty("Sergey", "Vetrov", "JurFak", "Zaochn", 4.1226);
+                        
+            }
+ 
+            sort(students);
+            System.out.println(StudentOfFaculty.toStringCount(count));
+        }
+ 
+        public static void sort(StudentOfFaculty[] students) {
+            Scanner sc = new Scanner(System.in); 
+            System.out.println("Выберите форму обучения: Очная(1), Заочная(2)");
+            int x = sc.nextInt();   
+            if (x == 1){
+                for (StudentOfFaculty s : students) {
+                    if ("Ochn".equals(s.Type())){
+                System.out.println("Name : " + s.Name());
+                System.out.println("Surname: " + s.Surname());
+                System.out.println("Faculty: " + s.Faculty());
+                System.out.println("Group: " + s.Group());
+                System.out.println();
+                    }
+                }
+            }
+            if (x == 2){
+                for (StudentOfFaculty s : students) {
+                    if ("Zaochn".equals(s.Type())){
+                System.out.println("Name : " + s.Name());
+                System.out.println("Surname: " + s.Surname());
+                System.out.println("Faculty: " + s.Faculty());
+                System.out.println("Group: " + s.Group());
+                System.out.println();
+                    }
+                }
+            }
+        }
+    }
+}
